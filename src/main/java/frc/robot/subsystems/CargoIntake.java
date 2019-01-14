@@ -34,6 +34,10 @@ public class CargoIntake extends Subsystem {
         spun = false;
     }
 
+    public boolean getSpun() {
+        return spun;
+    }
+
     public void reset() {
         cargoIntakeTalonSRX.set(ControlMode.PercentOutput, SPIN_DOWN_VAL);
         spun = false;
