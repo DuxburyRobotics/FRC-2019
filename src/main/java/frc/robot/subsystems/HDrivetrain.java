@@ -63,5 +63,4 @@ public class HDrivetrain extends Subsystem {
     protected void initDefaultCommand() {
         //TODO: setDefaultCommand(command);
     }
-	}
 }
