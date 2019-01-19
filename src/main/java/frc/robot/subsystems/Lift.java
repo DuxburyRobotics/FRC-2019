@@ -49,9 +49,6 @@ public class Lift extends Subsystem {
 
     public void moveTo(double updatedHeight) {
         //TODO: Motion magic from current position to updated height
-
-        currentHeight = updatedHeight;
-        liftMaster.set(ControlMode.MotionMagic, )
         
     }
 
