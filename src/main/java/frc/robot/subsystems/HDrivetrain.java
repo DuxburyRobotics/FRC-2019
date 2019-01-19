@@ -31,16 +31,37 @@ public class HDrivetrain extends Subsystem {
         leftSlave.setInverted(false);
     }
 
+    double tunedThrottle = 0.0;
+    double tunedStrafe = 0.0;
     public void arcadeDrive(double throttle, double turn, double strafe) {
-        rightMaster.set(ControlMode.PercentOutput, throttle + turn);
-        leftMaster.set(ControlMode.PercentOutput, throttle - turn);
-        centerMaster.set(ControlMode.PercentOutput, strafe);
+
+        //Taking raw throttle and applying a sin^2 curve to tune throttle sensitivity (https://www.desmos.com/calculator/hogfsmqfqe)
+        if (throttle > 0) {
+            tunedThrottle = Math.pow(Math.sin((Math.PI/2) * throttle), 2);
+        } else {
+            tunedThrottle = -Math.pow(Math.sin((Math.PI/2) * throttle), 2);
+        }
+
+        //Taking raw strafe and applyng a sin^2 curve to tune throttle sensitivity (https://www.desmos.com/calculator/hjemci2ebf)
+        if (strafe > 0) {
+            tunedStrafe = Math.pow(Math.sin((Math.PI/2) * strafe), 4);
+        } else {
+            tunedStrafe = -Math.pow(Math.sin((Math.PI/2) * strafe), 4);
+        }
+
+        //Holonomic Drivetrain
+        rightMaster.set(ControlMode.PercentOutput, tunedThrottle + turn);
+        leftMaster.set(ControlMode.PercentOutput, tunedThrottle - turn);
+        centerMaster.set(ControlMode.PercentOutput, tunedStrafe);
     }
 
-    @Override
+    public void reset() {
+
+    }
+
+	@Override
     protected void initDefaultCommand() {
-        //TODO: setDefaultCommand(command)
+        //TODO: setDefaultCommand(command);
     }
-
-
+	}
 }
