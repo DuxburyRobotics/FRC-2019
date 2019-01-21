@@ -8,6 +8,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.util.JoystickMap;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -22,13 +25,24 @@ public class OI {
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
 
-  private static final int THROTTLE_AXIS_ID = 1;
-  private static final int STRAFE_AXIS_ID = 0;
-  private static final int TURN_AXIS_ID = 0;
-
   Joystick turningJoy = new Joystick(0);
   Joystick throttleJoy = new Joystick(1);
   Joystick operatorJoystick = new Joystick(2);
+
+  Button driveToggleButton = new JoystickButton(throttleJoy, JoystickMap.DRIVEMODE_TOGGLE_ID);
+
+  Button liftToggleButton = new JoystickButton(operatorJoystick, JoystickMap.LIFTMODE_TOGGLE_ID);
+
+  Button hatchToggleButton = new JoystickButton(operatorJoystick, JoystickMap.HATCHHOLDER_TOGGLE_ID);
+
+  Button intakeToggleButton = new JoystickButton(operatorJoystick, JoystickMap.CARGOINTAKE_TOGGLE_ID);
+
+  Button cargoToggleButton = new JoystickButton(operatorJoystick, JoystickMap.CARGOHOLDER_TOGGLE_ID);
+
+  Button liftIncreaseButton = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELINCREASE);
+
+  Button liftDecreaseButton = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELDECREASE);
+
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
@@ -51,14 +65,14 @@ public class OI {
   // button.whenReleased(new ExampleCommand());
 
   public double getThrottle() {
-    return throttleJoy.getRawAxis(THROTTLE_AXIS_ID);
+    return throttleJoy.getRawAxis(JoystickMap.THROTTLE_AXIS_ID);
   }
 
   public double getStrafe() {
-    return throttleJoy.getRawAxis(STRAFE_AXIS_ID);
+    return throttleJoy.getRawAxis(JoystickMap.STRAFE_AXIS_ID);
   }
 
   public double getTurn() {
-    return turningJoy.getRawAxis(TURN_AXIS_ID);
+    return turningJoy.getRawAxis(JoystickMap.TURN_AXIS_ID);
   }
 }

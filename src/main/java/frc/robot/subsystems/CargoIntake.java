@@ -34,7 +34,7 @@ public class CargoIntake extends Subsystem {
         spun = false;
     }
 
-    public boolean getSpun() {
+    public boolean getState() {
         return spun;
     }
 

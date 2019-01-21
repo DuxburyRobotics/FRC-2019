@@ -12,7 +12,7 @@ public class HDrivetrain extends Subsystem {
      * The drivetrain subsystem models the West Coast drive style of drivetrain (with sensitive strafing control)
      * Joystick inputs are tuned using ~sin^2 or x^(3 or 5) equations for maximum control
      */
-
+    
     private TalonSRX rightMaster = new TalonSRX(RobotMap.RIGHT_DRIVE_MASTER);
     private TalonSRX rightSlave = new TalonSRX(RobotMap.RIGHT_DRIVE_SLAVE);;
     private TalonSRX leftMaster = new TalonSRX(RobotMap.LEFT_DRIVE_MASTER);;
