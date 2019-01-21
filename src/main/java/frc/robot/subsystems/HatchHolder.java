@@ -7,6 +7,11 @@ import frc.robot.RobotMap;
 
 public class HatchHolder extends Subsystem {
 
+    /**
+     * The HatchHolder class describes the dual solenoid loop functionality of the grabbing 
+     * part of the hatch mechanism and the release
+     */
+
     private DoubleSolenoid extenderDSolenoid;
     private DoubleSolenoid releaseDSolenoid;
 
