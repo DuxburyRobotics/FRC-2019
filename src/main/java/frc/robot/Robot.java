@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.HatchHolder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +23,12 @@ import frc.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+  public static HDrivetrain rHDrivetrain = new HDrivetrain();
+  public static Lift rLift = new Lift();
+  public static HatchHolder rHatchHolder = new HatchHolder();
+  public static CargoHolder rCargoHolder = new CargoHolder();
+  public static CargoIntake rCargoIntake = new CargoIntake();
+
   public static OI m_oi;
 
   Command m_autonomousCommand;

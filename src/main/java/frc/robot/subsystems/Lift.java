@@ -24,7 +24,7 @@ public class Lift extends Subsystem {
 
     private static enum LiftMode {Cargo, Hatch};
 
-    private LiftMode currentMode = LiftMode.Hatch;
+    private LiftMode currentMode;
     private double currentHeight;
     private TalonSRX liftMaster;
     private TalonSRX liftSlave;
@@ -32,6 +32,7 @@ public class Lift extends Subsystem {
     public Lift() {
         liftMaster = new TalonSRX(RobotMap.LIFT_MASTER);
         liftSlave = new TalonSRX(RobotMap.LIFT_SLAVE);
+        currentMode = LiftMode.Hatch;
         //currentHeight = do some math to figure out current position
     }
 
