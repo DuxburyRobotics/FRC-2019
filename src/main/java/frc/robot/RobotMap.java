@@ -24,28 +24,27 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  //DRIVETRAIN
-  public static final int RIGHT_DRIVE_MASTER = 2;
-  public static final int RIGHT_DRIVE_SLAVE = 3;
-  public static final int LEFT_DRIVE_MASTER = 4;
-  public static final int LEFT_DRIVE_SLAVE = 5;
-  public static final int CENTER_DRIVE_MASTER = 6;
-  public static final int CENTER_DRIVE_SLAVE = 7;
+  // DRIVETRAIN
+  public static final int RIGHT_DRIVE_MASTER = 16;
+  public static final int RIGHT_DRIVE_SLAVE = 17;
+  public static final int LEFT_DRIVE_MASTER = 13;
+  public static final int LEFT_DRIVE_SLAVE = 12;
+  public static final int CENTER_DRIVE_MASTER = 11;
 
-  //CARGO INTAKE
+  // CARGO INTAKE
   public static final int CARGO_INTAKE = 10;
 
-  //LIFT WINCH
+  // LIFT WINCH
   public static final int LIFT_MASTER = 8;
   public static final int LIFT_SLAVE = 9;
 
-  //HATCH SOLENOIDS
+  // HATCH SOLENOIDS
   public static final int HATCHGRAB_FORWARD = 1;
   public static final int HATCHGRAB_REVERSE = 2;
   public static final int HATCHRELEASE_FORWARD = 3;
   public static final int HATCHRELEASE_REVERSE = 4;
 
-  //CARGO SOLENOIDS
+  // CARGO SOLENOIDS
   public static final int CARGO_HOLD_ACTIVE = 5;
   public static final int CARGO_HOLD_INACTIVE = 6;
   public static final int CARGO_RELEASE_FORWARD = 7;

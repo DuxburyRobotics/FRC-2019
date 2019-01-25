@@ -25,8 +25,8 @@ public class OI {
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
 
-  Joystick turningJoy = new Joystick(0);
-  Joystick throttleJoy = new Joystick(1);
+  Joystick turningJoy = new Joystick(1);
+  Joystick throttleJoy = new Joystick(0);
   Joystick operatorJoystick = new Joystick(2);
 
   Button driveToggleButton = new JoystickButton(throttleJoy, JoystickMap.DRIVEMODE_TOGGLE_ID);
@@ -42,7 +42,6 @@ public class OI {
   Button liftIncreaseButton = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELINCREASE);
 
   Button liftDecreaseButton = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELDECREASE);
-
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
@@ -64,15 +63,11 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
 
-  public double getThrottle() {
-    return throttleJoy.getRawAxis(JoystickMap.THROTTLE_AXIS_ID);
+  public Joystick getThrottle() {
+    return throttleJoy;
   }
 
-  public double getStrafe() {
-    return throttleJoy.getRawAxis(JoystickMap.STRAFE_AXIS_ID);
-  }
-
-  public double getTurn() {
-    return turningJoy.getRawAxis(JoystickMap.TURN_AXIS_ID);
+  public Joystick getTurn() {
+    return turningJoy;
   }
 }
