@@ -28,10 +28,13 @@ public class HDrivetrain extends Subsystem {
         rightSlave.follow(rightMaster);
         leftSlave.follow(leftMaster);
 
-        rightMaster.setInverted(true);
-        rightSlave.setInverted(true);
-        leftMaster.setInverted(false);
-        leftSlave.setInverted(false);
+        rightMaster.setInverted(false);
+        rightSlave.setInverted(false);
+        leftMaster.setInverted(true);
+        leftSlave.setInverted(true);
+
+        // Center wheel ramp rate in order to prevent wheel slippage
+        centerMaster.configOpenloopRamp(7);
     }
 
     double tunedThrottle = 0.0;
@@ -42,6 +45,8 @@ public class HDrivetrain extends Subsystem {
     double strafeVal = 0.0;
 
     public void arcadeDrive(Joystick throttle, Joystick turn) {
+
+        // Forward on the throttle is reversed: Flip Y-Axis
 
         throttleVal = throttle.getRawAxis(JoystickMap.THROTTLE_AXIS_ID);
         turnVal = 0.5 * turn.getRawAxis(JoystickMap.TURN_AXIS_ID);
@@ -57,12 +62,16 @@ public class HDrivetrain extends Subsystem {
 
         // Taking raw strafe and applyng a sin^2 curve to tune throttle sensitivity
         // (https://www.desmos.com/calculator/hjemci2ebf)
-        tunedStrafe = Math.pow(strafeVal, 1.8);
+        if (strafeVal > 0) {
+            tunedStrafe = Math.pow(strafeVal, 1.7);
+        } else {
+            tunedStrafe = -Math.pow(-strafeVal, 1.7);
+        }
 
         // Holonomic Drivetrain
-        rightMaster.set(ControlMode.PercentOutput, 0.8571 * (tunedThrottle + turnVal));
-        leftMaster.set(ControlMode.PercentOutput, tunedThrottle - turnVal);
-        centerMaster.set(ControlMode.PercentOutput, tunedStrafe * 0.1);
+        rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + turnVal));
+        leftMaster.set(ControlMode.PercentOutput, 0.8571*(tunedThrottle - turnVal));
+        centerMaster.set(ControlMode.PercentOutput, tunedStrafe);
     }
 
     public void reset() {
