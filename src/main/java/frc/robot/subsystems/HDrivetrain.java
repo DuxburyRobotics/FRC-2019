@@ -14,8 +14,7 @@ public class HDrivetrain extends Subsystem {
 
     /**
      * The drivetrain subsystem models the West Coast drive style of drivetrain
-     * (with sensitive strafing control) Joystick inputs are tuned using ~sin^2 or
-     * x^(3 or 5) equations for maximum control
+     * (with sensitive strafing control) Joystick inputs are tuned for maximum control
      */
 
     private TalonSRX rightMaster = new TalonSRX(RobotMap.RIGHT_DRIVE_MASTER);
@@ -34,48 +33,42 @@ public class HDrivetrain extends Subsystem {
         leftSlave.setInverted(true);
 
         // Center wheel ramp rate in order to prevent wheel slippage
-        centerMaster.configOpenloopRamp(7);
+        centerMaster.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
     }
-
+    
+    double throttle = 0.0;
+    double turn = 0.0;
+    double strafe = 0.0;
     double tunedThrottle = 0.0;
     double tunedStrafe = 0.0;
+    
 
-    double throttleVal = 0.0;
-    double turnVal = 0.0;
-    double strafeVal = 0.0;
+    public void arcadeDrive(Joystick throttleJoy, Joystick turnJoy) {
 
-    public void arcadeDrive(Joystick throttle, Joystick turn) {
-
-        // Forward on the throttle is reversed: Flip Y-Axis
-
-        throttleVal = throttle.getRawAxis(JoystickMap.THROTTLE_AXIS_ID);
-        turnVal = 0.5 * turn.getRawAxis(JoystickMap.TURN_AXIS_ID);
-        strafeVal = throttle.getRawAxis(JoystickMap.STRAFE_AXIS_ID);
+        throttle = throttleJoy.getRawAxis(JoystickMap.THROTTLE_AXIS_ID);
+        turn = 0.5 * turnJoy.getRawAxis(JoystickMap.TURN_AXIS_ID);
+        strafe = throttleJoy.getRawAxis(JoystickMap.STRAFE_AXIS_ID);
 
         // Taking raw throttle and applying a sin^2 curve to tune throttle sensitivity
         // (https://www.desmos.com/calculator/hogfsmqfqe)
-        if (throttleVal > 0) {
-            tunedThrottle = Math.pow(Math.sin((Math.PI / 2) * throttleVal), 2);
+        if (throttle > 0) {
+            tunedThrottle = Math.pow(Math.sin((Math.PI / 2) * throttle), 2);
         } else {
-            tunedThrottle = -Math.pow(Math.sin((Math.PI / 2) * throttleVal), 2);
+            tunedThrottle = -Math.pow(Math.sin((Math.PI / 2) * throttle), 2);
         }
 
-        // Taking raw strafe and applyng a sin^2 curve to tune throttle sensitivity
+        // Taking raw strafe and applyng a ^1.7 curve to tune throttle sensitivity
         // (https://www.desmos.com/calculator/hjemci2ebf)
-        if (strafeVal > 0) {
-            tunedStrafe = Math.pow(strafeVal, 1.7);
+        if (strafe > 0) {
+            tunedStrafe = Math.pow(strafe, 1.7);
         } else {
-            tunedStrafe = -Math.pow(-strafeVal, 1.7);
+            tunedStrafe = -Math.pow(-strafe, 1.7);
         }
 
         // Holonomic Drivetrain
-        rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + turnVal));
-        leftMaster.set(ControlMode.PercentOutput, 0.8571*(tunedThrottle - turnVal));
+        rightMaster.set(ControlMode.PercentOutput, tunedThrottle + turn);
+        leftMaster.set(ControlMode.PercentOutput, tunedThrottle - turn);
         centerMaster.set(ControlMode.PercentOutput, tunedStrafe);
-    }
-
-    public void reset() {
-
     }
 
     @Override
