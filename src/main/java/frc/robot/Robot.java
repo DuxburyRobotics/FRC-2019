@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -25,7 +25,7 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
   public static HDrivetrain rHDrivetrain = new HDrivetrain();
-
+  public static Compressor c = new Compressor();
   public static OI oi;
 
   Command m_autonomousCommand;
@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
-    oi.operatorJoystick.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
+    c.setClosedLoopControl(true);
     m_chooser.setDefaultOption("Default Auto", new DriveArcade());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);

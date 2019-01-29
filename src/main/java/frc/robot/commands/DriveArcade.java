@@ -23,7 +23,7 @@ public class DriveArcade extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.rHDrivetrain.arcadeDrive(Robot.m_oi.getThrottle(), Robot.m_oi.getTurn());
+    Robot.rHDrivetrain.arcadeDrive(Robot.oi.getThrottleJoy(), Robot.oi.getTurnJoy());
   }
 
   // Make this return true when this Command no longer needs to run execute()
