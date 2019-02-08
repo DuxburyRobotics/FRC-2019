@@ -46,9 +46,9 @@ public class HDrivetrain extends Subsystem {
 
     public void arcadeDrive(Joystick throttleJoy, Joystick turnJoy) {
 
-        throttle = throttleJoy.getRawAxis(JoystickMap.THROTTLE_AXIS_ID);
-        turn = 0.5 * turnJoy.getRawAxis(JoystickMap.TURN_AXIS_ID);
-        strafe = throttleJoy.getRawAxis(JoystickMap.STRAFE_AXIS_ID);
+        throttle = throttleJoy.getRawAxis(JoystickMap.TY);
+        turn = 0.5 * turnJoy.getRawAxis(JoystickMap.RX);
+        strafe = throttleJoy.getRawAxis(JoystickMap.TX);
 
         // Taking raw throttle and applying a sin^2 curve to tune throttle sensitivity
         // (https://www.desmos.com/calculator/hogfsmqfqe)

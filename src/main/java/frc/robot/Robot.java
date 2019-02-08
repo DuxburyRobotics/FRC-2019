@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,7 +26,13 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static HDrivetrain rHDrivetrain = new HDrivetrain();
+  //public HDrivetrain rHDrivetrain = new HDrivetrain();
+  //public static Lift rLift = new Lift();
+  //public static HatchHolder rHatchHolder = new HatchHolder();
+  
+  UsbCamera frontCamera;
+  UsbCamera rearCamera;
+  //public static Lift rLift = new Lift(); 
   public static Compressor c = new Compressor();
   public static OI oi;
 
@@ -42,6 +50,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new DriveArcade());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    //frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
+    //rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
   }
 
   /**
@@ -125,12 +135,18 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    updateDashboard();
   }
-
+  
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
+  }
+
+  private void updateDashboard() {
+    //SmartDashboard.putString("Hatch Release", rHatchHolder.getState().toString());
+    //SmartDashboard.putNumber("Lift Encoder", rLift.getEncoderPos());
   }
 }

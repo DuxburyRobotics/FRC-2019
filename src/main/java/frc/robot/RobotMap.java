@@ -16,28 +16,28 @@ package frc.robot;
 public class RobotMap {
 
   // DRIVETRAIN
-  public static final int CENTER_DRIVE_MASTER = 11;
-  public static final int LEFT_DRIVE_SLAVE = 12;
-  public static final int LEFT_DRIVE_MASTER = 13;
-  public static final int RIGHT_DRIVE_MASTER = 16;
-  public static final int RIGHT_DRIVE_SLAVE = 17;
+  public static final int CENTER_DRIVE_MASTER = -1;
+  public static final int LEFT_DRIVE_SLAVE = -1;
+  public static final int LEFT_DRIVE_MASTER = -1;
+  public static final int RIGHT_DRIVE_MASTER = -1;
+  public static final int RIGHT_DRIVE_SLAVE = -1;
 
   // CARGO INTAKE
-  public static final int CARGO_INTAKE = 10;
+  public static final int CARGO_INTAKE = -1;
 
   // LIFT WINCH
-  public static final int LIFT_MASTER = 8;
-  public static final int LIFT_SLAVE = 9;
+  public static final int LIFT_MASTER = -1;
+  public static final int LIFT_SLAVE = -1;
 
   // HATCH SOLENOIDS
-  public static final int HATCHGRAB_FORWARD = 1;
-  public static final int HATCHGRAB_REVERSE = 2;
-  public static final int HATCHRELEASE_FORWARD = 3;
-  public static final int HATCHRELEASE_REVERSE = 4;
+  public static final int HATCHGRAB_FORWARD = -1;
+  public static final int HATCHGRAB_REVERSE = -1;
+  public static final int HATCHRELEASE_FORWARD = -1;
+  public static final int HATCHRELEASE_REVERSE = -1;
 
   // CARGO SOLENOIDS
-  public static final int CARGO_HOLD_ACTIVE = 5;
-  public static final int CARGO_HOLD_INACTIVE = 6;
-  public static final int CARGO_RELEASE_FORWARD = 7;
-  public static final int CARGO_RELEASE_REVERSE = 8;
+  public static final int CARGO_HOLD_ACTIVE = -1;
+  public static final int CARGO_HOLD_INACTIVE = -1;
+  public static final int CARGO_RELEASE_FORWARD = -1;
+  public static final int CARGO_RELEASE_REVERSE = -1;
 }

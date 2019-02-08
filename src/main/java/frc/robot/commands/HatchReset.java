@@ -10,9 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveArcade extends Command {
-  public DriveArcade() {
-    //requires(Robot.rHDrivetrain);
+public class HatchReset extends Command {
+  public HatchReset() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
@@ -23,13 +24,13 @@ public class DriveArcade extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.rHDrivetrain.arcadeDrive(Robot.oi.getThrottle(), Robot.oi.getRot());
+    //Robot.rHatchHolder.reset();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
@@ -41,5 +42,6 @@ public class DriveArcade extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    super.interrupted();
   }
 }

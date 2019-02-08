@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.util.JoystickMap;
+import frc.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -25,29 +26,45 @@ public class OI {
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
 
-  Joystick turningJoy = new Joystick(1);
   Joystick throttleJoy = new Joystick(0);
-  Joystick operatorJoystick = new Joystick(2);
+  Joystick rotJoy = new Joystick(1);
+  //Joystick operatorJoystick = new Joystick(2);
 
+  public OI() {
+  }
+  /*
   Button driveToggleButton = new JoystickButton(throttleJoy, JoystickMap.DRIVEMODE_TOGGLE_ID);
-
-  Button liftToggleButton = new JoystickButton(operatorJoystick, JoystickMap.LIFTMODE_TOGGLE_ID);
-
-  Button hatchToggleButton = new JoystickButton(operatorJoystick, JoystickMap.HATCHHOLDER_TOGGLE_ID);
-
+  Button hatchReleaseButton = new JoystickButton(operatorJoystick, JoystickMap.HATCHHOLDER_RELEASE_ID);
   Button intakeToggleButton = new JoystickButton(operatorJoystick, JoystickMap.CARGOINTAKE_TOGGLE_ID);
-
   Button cargoToggleButton = new JoystickButton(operatorJoystick, JoystickMap.CARGOHOLDER_TOGGLE_ID);
-
   Button liftLowestLevel = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELINCREASE);
-
   Button LiftMidLevel = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELDECREASE);
+*/
+
+  public double getThrottle() {
+    return throttleJoy.getRawAxis(JoystickMap.TY);
+  }
+
+  public double getStrafe() {
+    return throttleJoy.getRawAxis(JoystickMap.TX);
+  }
+
+  public double getRot() {
+    return rotJoy.getRawAxis(JoystickMap.RX);
+  }
+
+  /*
+  public Joystick getOperatorJoy() {
+    return operatorJoystick;
+  }
 
   public Joystick getThrottleJoy() {
     return throttleJoy;
   }
 
-  public Joystick getTurnJoy() {
-    return turningJoy;
-  }
+  public Joystick getRotJoy() {
+    return rotJoy;
+  } 
+  */
+  
 }
