@@ -45,6 +45,5 @@ public class CargoIntake extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        //TODO: setDefaultCommand(command)
     }
 }

@@ -10,11 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MoveLiftDown extends Command {
-  public MoveLiftDown() {
+public class LiftDriveDirect extends Command {
+  public LiftDriveDirect() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    //requires(Robot.rLift);
+    requires(Robot.rLift);
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +25,6 @@ public class MoveLiftDown extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.rLift.moveDown();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -43,6 +42,5 @@ public class MoveLiftDown extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    super.interrupted();
   }
 }

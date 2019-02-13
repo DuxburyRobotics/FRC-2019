@@ -26,18 +26,10 @@ public class RobotMap {
   public static final int CARGO_INTAKE = -1;
 
   // LIFT WINCH
-  public static final int LIFT_MASTER = -1;
-  public static final int LIFT_SLAVE = -1;
+  public static final int LIFT_MASTER = 13;
+  public static final int LIFT_SLAVE = 12;
 
-  // HATCH SOLENOIDS
-  public static final int HATCHGRAB_FORWARD = -1;
-  public static final int HATCHGRAB_REVERSE = -1;
-  public static final int HATCHRELEASE_FORWARD = -1;
-  public static final int HATCHRELEASE_REVERSE = -1;
-
-  // CARGO SOLENOIDS
-  public static final int CARGO_HOLD_ACTIVE = -1;
-  public static final int CARGO_HOLD_INACTIVE = -1;
-  public static final int CARGO_RELEASE_FORWARD = -1;
-  public static final int CARGO_RELEASE_REVERSE = -1;
+  // HATCH-CARGO SOLENOIDS
+  public static final int HATCHCARGO_ACTIVE = -1;
+  public static final int HATCHCARGO_INACTIVE = -1;
 }

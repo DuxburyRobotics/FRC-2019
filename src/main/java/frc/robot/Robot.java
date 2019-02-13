@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
@@ -26,18 +30,20 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  //public HDrivetrain rHDrivetrain = new HDrivetrain();
-  //public static Lift rLift = new Lift();
-  //public static HatchHolder rHatchHolder = new HatchHolder();
-  
-  UsbCamera frontCamera;
-  UsbCamera rearCamera;
+  //public static HDrivetrain rHDrivetrain;
+  //public static HatchCargoHolder rHatchCargoHolder;
+  //public static CargoIntake rCargoIntake;
   //public static Lift rLift = new Lift(); 
-  public static Compressor c = new Compressor();
+  
+  Compressor c = new Compressor();
+
   public static OI oi;
 
+  UsbCamera frontCamera;
+  UsbCamera rearCamera;
+
   Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  SendableChooser<Command> liftHeightChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -45,13 +51,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    oi = new OI();
     c.setClosedLoopControl(true);
-    m_chooser.setDefaultOption("Default Auto", new DriveArcade());
+    oi = new OI();
+
+    //rHDrivetrain = new HDrivetrain();
+    //rHatchCargoHolder = new HatchCargoHolder();
+    //rCargoIntake = new CargoIntake();
+    //rLift = new Lift();
+
+    liftHeightChooser.setDefaultOption("Level One", new DriveArcade());
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-    //frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
-    //rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
+    SmartDashboard.putData("Lift Height", liftHeightChooser);
+
+    frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
+    rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
   }
 
   /**
@@ -65,6 +78,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
   }
 
   /**
@@ -74,6 +88,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    //rCargoIntake.reset();
+    //rHatchCargoHolder.reset();
+    //rLift.reset();
   }
 
   @Override
@@ -95,7 +112,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    //m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -132,8 +149,11 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during operator control.
    */
+
+  //VictorSPX victor = new VictorSPX(4);
   @Override
   public void teleopPeriodic() {
+    //victor.set(ControlMode.PercentOutput, 0.40);
     Scheduler.getInstance().run();
     updateDashboard();
   }

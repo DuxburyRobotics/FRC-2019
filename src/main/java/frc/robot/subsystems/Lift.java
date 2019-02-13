@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.MoveLiftUp;
 import frc.robot.util.*;
 
 public class Lift extends Subsystem {
@@ -28,12 +27,55 @@ public class Lift extends Subsystem {
      * the match.
      */
 
+    private static enum LiftState {
+        GoingUp,
+        GoingDown,
+        Stationary,
+        BottomedOut,
+        ToppedOut,
+    }
+
+    public LiftState getState() {
+        return this.state;
+    }
+
+    private void setState(LiftState newState) {
+        this.state = newState;
+    }
+
     private static enum LiftMode {
         Cargo, Hatch
     };
 
+    private void setMode(LiftMode updatedLiftMode) {
+        this.currentMode = updatedLiftMode;
+    }
+
+    public enum Positions {
+        Intake(0),
+        RocketC0(131990),
+        RocketH1(434791),
+        RocketC1(566781),
+        RocketH2(869582),
+        RocketC2(1001572);
+
+        private int position;
+        
+        Positions(int encPos) {
+            this.position = encPos;
+        }
+
+        public int getPosition() {
+            return this.position;
+        }
+    }
+
+    private volatile LiftState state = LiftState.Stationary;
+    private volatile Positions position = Positions.Intake;
+
     private LiftMode currentMode;
     private double currentHeight;
+
     private TalonSRX liftMaster;
     private VictorSPX liftSlave;
 
@@ -48,10 +90,6 @@ public class Lift extends Subsystem {
         // currentHeight = do some math to figure out current position
     }
 
-    public void setMode(LiftMode updatedLiftMode) {
-        this.currentMode = updatedLiftMode;
-    }
-
     public void toggleMode() {
         if (currentMode == LiftMode.Cargo) {
             currentMode = LiftMode.Hatch;
@@ -60,12 +98,19 @@ public class Lift extends Subsystem {
         }
     }
 
-    public void moveUp() {
-        liftMaster.set(ControlMode.PercentOutput, 0.1);
+    public void startMotionMagic(Positions position) {
+        int currentPosition = getEncoderPos();
+        if (currentPosition > position.getPosition()) {
+
+        }
     }
 
-    public void moveDown() {
-        liftMaster.set(ControlMode.PercentOutput, -0.1);
+    public void directControl(double liftSpeed) {
+        liftMaster.set(ControlMode.PercentOutput, liftSpeed * 0.2);
+    }
+
+    public void stop() {
+        liftMaster.set(ControlMode.PercentOutput, 0);
     }
 
     public void moveTo(double updatedHeight) {
@@ -73,7 +118,7 @@ public class Lift extends Subsystem {
 
     }
 
-    public double getEncoderPos() {
+    public int getEncoderPos() {
         return liftMaster.getSelectedSensorPosition(0);
     }
 

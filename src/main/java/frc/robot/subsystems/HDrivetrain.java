@@ -37,18 +37,9 @@ public class HDrivetrain extends Subsystem {
         centerMaster.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
     }
     
-    double throttle = 0.0;
-    double turn = 0.0;
-    double strafe = 0.0;
     double tunedThrottle = 0.0;
     double tunedStrafe = 0.0;
-    
-
-    public void arcadeDrive(Joystick throttleJoy, Joystick turnJoy) {
-
-        throttle = throttleJoy.getRawAxis(JoystickMap.TY);
-        turn = 0.5 * turnJoy.getRawAxis(JoystickMap.RX);
-        strafe = throttleJoy.getRawAxis(JoystickMap.TX);
+    public void arcadeDrive(double throttle, double turn, double strafe) {
 
         // Taking raw throttle and applying a sin^2 curve to tune throttle sensitivity
         // (https://www.desmos.com/calculator/hogfsmqfqe)

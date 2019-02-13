@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.util.JoystickMap;
@@ -28,25 +29,26 @@ public class OI {
 
   Joystick throttleJoy = new Joystick(0);
   Joystick rotJoy = new Joystick(1);
-  //Joystick operatorJoystick = new Joystick(2);
+  Joystick opJoy = new Joystick(2);
+
+  Button hatchCargoToggle = new JoystickButton(opJoy, JoystickMap.A);
+  Button enableIntake = new JoystickButton(opJoy, JoystickMap.B);
+  Button disableIntake = new JoystickButton(opJoy, JoystickMap.X);
+  Button liftLevelZero = new JoystickButton(opJoy, JoystickMap.Y);
+  Button liftLevelOne = new JoystickButton(opJoy, JoystickMap.LBUMPER);
+  Button liftLevelTwo = new JoystickButton(opJoy, JoystickMap.RBUMPER);
+  
+  Button toggleLiftMode = new JoystickButton(opJoy, JoystickMap.LJOY);
 
   public OI() {
   }
-  /*
-  Button driveToggleButton = new JoystickButton(throttleJoy, JoystickMap.DRIVEMODE_TOGGLE_ID);
-  Button hatchReleaseButton = new JoystickButton(operatorJoystick, JoystickMap.HATCHHOLDER_RELEASE_ID);
-  Button intakeToggleButton = new JoystickButton(operatorJoystick, JoystickMap.CARGOINTAKE_TOGGLE_ID);
-  Button cargoToggleButton = new JoystickButton(operatorJoystick, JoystickMap.CARGOHOLDER_TOGGLE_ID);
-  Button liftLowestLevel = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELINCREASE);
-  Button LiftMidLevel = new JoystickButton(operatorJoystick, JoystickMap.LIFTLEVELDECREASE);
-*/
 
   public double getThrottle() {
-    return throttleJoy.getRawAxis(JoystickMap.TY);
+    return throttleJoy.getRawAxis(JoystickMap.RY);
   }
 
   public double getStrafe() {
-    return throttleJoy.getRawAxis(JoystickMap.TX);
+    return throttleJoy.getRawAxis(JoystickMap.RX);
   }
 
   public double getRot() {

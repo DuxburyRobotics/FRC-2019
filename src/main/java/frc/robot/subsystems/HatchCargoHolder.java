@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-public class HatchHolder extends Subsystem {
+public class HatchCargoHolder extends Subsystem {
 
     /**
      * The hatch subsystem consists of one bi-directional solenoid loop. When the
@@ -14,8 +14,8 @@ public class HatchHolder extends Subsystem {
      */
     private DoubleSolenoid hatchDoubleSolenoid;
 
-    public HatchHolder() {
-        hatchDoubleSolenoid = new DoubleSolenoid(RobotMap.HATCHRELEASE_FORWARD, RobotMap.HATCHRELEASE_REVERSE);
+    public HatchCargoHolder() {
+        //hatchDoubleSolenoid = new DoubleSolenoid(RobotMap.HATCHRELEASE_FORWARD, RobotMap.HATCHRELEASE_REVERSE);
         hatchDoubleSolenoid.set(Value.kReverse);
     }
 
