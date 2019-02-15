@@ -12,7 +12,7 @@ import frc.robot.Robot;
 
 public class DriveArcade extends Command {
   public DriveArcade() {
-    //requires(Robot.rHDrivetrain);
+    requires(Robot.rHDrivetrain);
   }
 
   // Called just before this Command runs the first time
@@ -23,7 +23,7 @@ public class DriveArcade extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.rHDrivetrain.arcadeDrive(Robot.oi.getThrottle(), Robot.oi.getRot(), Robot.oi.getStrafe());
+    Robot.rHDrivetrain.arcadeDrive(Robot.oi.getThrottle(), Robot.oi.getRot(), Robot.oi.getStrafe());
   }
 
   // Make this return true when this Command no longer needs to run execute()

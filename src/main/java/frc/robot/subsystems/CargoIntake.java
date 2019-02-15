@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -13,34 +14,43 @@ public class CargoIntake extends Subsystem {
      * to pick as well as what period of the match the robot is in.
      */
 
-    private static final double SPIN_UP_VAL = 1.0;
+    private static final double SPIN_UP_VAL = 0.40;
     private static final double SPIN_DOWN_VAL = 0.0;
+
+    private boolean state = false;
     
-    private TalonSRX cargoIntakeTalonSRX;
-    private boolean spun;
+    private VictorSPX cargoIntakeTalonSRX = new VictorSPX(RobotMap.CARGO_INTAKE);;
 
     public CargoIntake() {
-        cargoIntakeTalonSRX = new TalonSRX(RobotMap.CARGO_INTAKE);
-        spun = false;
+        cargoIntakeTalonSRX = new VictorSPX(RobotMap.CARGO_INTAKE);
+        cargoIntakeTalonSRX.setInverted(true);
+    }
+
+    public void toggleIntake() {
+        boolean currentState = getState();
+        if (currentState) {
+            spinDown();
+        } else {
+            spinUp();
+        }
     }
 
     public void spinUp() {
+        state = !state;
         cargoIntakeTalonSRX.set(ControlMode.PercentOutput, SPIN_UP_VAL);
-        spun = true;
     }
 
     public void spinDown() {
+        state = !state;
         cargoIntakeTalonSRX.set(ControlMode.PercentOutput, SPIN_DOWN_VAL);
-        spun = false;
     }
 
     public boolean getState() {
-        return spun;
+        return this.state;
     }
 
     public void reset() {
         cargoIntakeTalonSRX.set(ControlMode.PercentOutput, SPIN_DOWN_VAL);
-        spun = false;
     }
 
     @Override

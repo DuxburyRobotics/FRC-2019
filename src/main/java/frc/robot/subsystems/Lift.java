@@ -5,9 +5,9 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.LiftDriveDirect;
 import frc.robot.util.*;
 
 public class Lift extends Subsystem {
@@ -87,6 +87,7 @@ public class Lift extends Subsystem {
         liftSlave = new VictorSPX(RobotMap.LIFT_SLAVE);
         liftSlave.follow(liftMaster);
         currentMode = LiftMode.Hatch;
+
         // currentHeight = do some math to figure out current position
     }
 
@@ -101,12 +102,14 @@ public class Lift extends Subsystem {
     public void startMotionMagic(Positions position) {
         int currentPosition = getEncoderPos();
         if (currentPosition > position.getPosition()) {
-
+            this.setState(LiftState.GoingDown);
+        } else if (currentPosition < position.getPosition()) {
+            this.setState(LiftState.GoingUp);
         }
     }
 
     public void directControl(double liftSpeed) {
-        liftMaster.set(ControlMode.PercentOutput, liftSpeed * 0.2);
+        liftMaster.set(ControlMode.PercentOutput, liftSpeed * 0.4);
     }
 
     public void stop() {
@@ -129,6 +132,7 @@ public class Lift extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
+        setDefaultCommand(new LiftDriveDirect());
     }
 
 }

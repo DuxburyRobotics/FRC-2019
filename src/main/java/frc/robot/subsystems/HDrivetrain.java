@@ -4,12 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveArcade;
 import frc.robot.util.Constants;
-import frc.robot.util.JoystickMap;
 
 public class HDrivetrain extends Subsystem {
 
@@ -18,11 +16,11 @@ public class HDrivetrain extends Subsystem {
      * (with sensitive strafing control) Joystick inputs are tuned for maximum control
      */
 
-    private TalonSRX rightMaster = new TalonSRX(RobotMap.RIGHT_DRIVE_MASTER);
+    private VictorSPX rightMaster = new VictorSPX(RobotMap.RIGHT_DRIVE_MASTER);
     private VictorSPX rightSlave = new VictorSPX(RobotMap.RIGHT_DRIVE_SLAVE);;
     private TalonSRX leftMaster = new TalonSRX(RobotMap.LEFT_DRIVE_MASTER);;
-    private VictorSPX leftSlave = new VictorSPX(RobotMap.LEFT_DRIVE_SLAVE);
-    private VictorSPX centerMaster = new VictorSPX(RobotMap.CENTER_DRIVE_MASTER);
+    private TalonSRX leftSlave = new TalonSRX(RobotMap.LEFT_DRIVE_SLAVE);
+    private VictorSPX center = new VictorSPX(RobotMap.CENTER_DRIVE);
 
     public HDrivetrain() {
         rightSlave.follow(rightMaster);
@@ -34,7 +32,7 @@ public class HDrivetrain extends Subsystem {
         leftSlave.setInverted(true);
 
         // Center wheel ramp rate in order to prevent wheel slippage
-        centerMaster.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
+        center.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
     }
     
     double tunedThrottle = 0.0;
@@ -56,11 +54,11 @@ public class HDrivetrain extends Subsystem {
         } else {
             tunedStrafe = -Math.pow(-strafe, 1.7);
         }
-
+        System.out.println(turn);
         // Holonomic Drivetrain
         rightMaster.set(ControlMode.PercentOutput, tunedThrottle + turn);
         leftMaster.set(ControlMode.PercentOutput, tunedThrottle - turn);
-        centerMaster.set(ControlMode.PercentOutput, tunedStrafe);
+        center.set(ControlMode.PercentOutput, strafe);
     }
 
     @Override

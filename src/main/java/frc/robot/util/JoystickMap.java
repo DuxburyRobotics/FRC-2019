@@ -5,12 +5,12 @@ public class JoystickMap {
     //Rotation Joystick (Left)
     //Axes
     public static final int LY = 1;
-    public static final int LX = 2;
+    public static final int LX = 0;
 
     //Throttle Joystick (Right)
     //Axes
     public static final int RY = 1;
-    public static final int RX = 2;
+    public static final int RX = 0;
 
     //Operator Joystick (Emulated or Physical Xbox controller)
     //Button ids
@@ -24,4 +24,6 @@ public class JoystickMap {
     public static final int OPTIONS = 8;
     public static final int LJOY = 9;
     public static final int RJOY = 10;
+    //Axes
+    public static final int LJOYY = 5;
 }

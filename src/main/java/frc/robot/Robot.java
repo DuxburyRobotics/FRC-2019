@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveArcade;
+import frc.robot.commands.LiftDriveDirect;
 import frc.robot.subsystems.*;
 
 /**
@@ -30,10 +31,11 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  //public static HDrivetrain rHDrivetrain;
-  //public static HatchCargoHolder rHatchCargoHolder;
-  //public static CargoIntake rCargoIntake;
-  //public static Lift rLift = new Lift(); 
+  public static HDrivetrain rHDrivetrain = new HDrivetrain();
+  public static HatchCargoHolder rHatchCargoHolder = new HatchCargoHolder();
+  public static BallCargoHolder rBallCargoHolder = new BallCargoHolder();
+  public static CargoIntake rCargoIntake = new CargoIntake();
+  public static Lift rLift = new Lift();
   
   Compressor c = new Compressor();
 
@@ -54,13 +56,8 @@ public class Robot extends TimedRobot {
     c.setClosedLoopControl(true);
     oi = new OI();
 
-    //rHDrivetrain = new HDrivetrain();
-    //rHatchCargoHolder = new HatchCargoHolder();
-    //rCargoIntake = new CargoIntake();
-    //rLift = new Lift();
-
-    liftHeightChooser.setDefaultOption("Level One", new DriveArcade());
-    // chooser.addOption("My Auto", new MyAutoCommand());
+    liftHeightChooser.setDefaultOption("Intake ", new LiftDriveDirect());
+    liftHeightChooser.addOption("Level 0", new LiftDriveDirect());
     SmartDashboard.putData("Lift Height", liftHeightChooser);
 
     frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -150,10 +147,8 @@ public class Robot extends TimedRobot {
    * This function is called periodically during operator control.
    */
 
-  //VictorSPX victor = new VictorSPX(4);
   @Override
   public void teleopPeriodic() {
-    //victor.set(ControlMode.PercentOutput, 0.40);
     Scheduler.getInstance().run();
     updateDashboard();
   }
@@ -166,7 +161,8 @@ public class Robot extends TimedRobot {
   }
 
   private void updateDashboard() {
-    //SmartDashboard.putString("Hatch Release", rHatchHolder.getState().toString());
-    //SmartDashboard.putNumber("Lift Encoder", rLift.getEncoderPos());
+    SmartDashboard.putString("HatchCargo State:", rHatchCargoHolder.getState().toString());
+    SmartDashboard.putString("BallCargo State:", rBallCargoHolder.getState().toString());
+    SmartDashboard.putNumber("Lift Encoder", rLift.getEncoderPos());
   }
 }

@@ -16,20 +16,22 @@ package frc.robot;
 public class RobotMap {
 
   // DRIVETRAIN
-  public static final int CENTER_DRIVE_MASTER = -1;
-  public static final int LEFT_DRIVE_SLAVE = -1;
-  public static final int LEFT_DRIVE_MASTER = -1;
-  public static final int RIGHT_DRIVE_MASTER = -1;
-  public static final int RIGHT_DRIVE_SLAVE = -1;
+  public static final int CENTER_DRIVE = 11;
+  public static final int LEFT_DRIVE_MASTER = 2;    //TalonSRX
+  public static final int LEFT_DRIVE_SLAVE = 3;     //TalonSRX
+  public static final int RIGHT_DRIVE_MASTER = 15;
+  public static final int RIGHT_DRIVE_SLAVE = 17;
 
   // CARGO INTAKE
-  public static final int CARGO_INTAKE = -1;
+  public static final int CARGO_INTAKE = 4;
 
   // LIFT WINCH
-  public static final int LIFT_MASTER = 13;
+  public static final int LIFT_MASTER = 13; //TalonSRX
   public static final int LIFT_SLAVE = 12;
 
   // HATCH-CARGO SOLENOIDS
-  public static final int HATCHCARGO_ACTIVE = -1;
-  public static final int HATCHCARGO_INACTIVE = -1;
+  public static final int HATCH_ACTIVE = 1;
+  public static final int HATCH_INACTIVE = 7;
+  public static final int CARGO_ACTIVE = 0;
+  public static final int CARGO_INACTIVE = 6;
 }

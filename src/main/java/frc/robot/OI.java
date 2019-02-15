@@ -32,8 +32,9 @@ public class OI {
   Joystick opJoy = new Joystick(2);
 
   Button hatchCargoToggle = new JoystickButton(opJoy, JoystickMap.A);
-  Button enableIntake = new JoystickButton(opJoy, JoystickMap.B);
-  Button disableIntake = new JoystickButton(opJoy, JoystickMap.X);
+  Button ballCargoToggle = new JoystickButton(opJoy, JoystickMap.B);
+  Button enableIntake = new JoystickButton(opJoy, JoystickMap.X);
+  //Button disableIntake = new JoystickButton(opJoy, JoystickMap.X);
   Button liftLevelZero = new JoystickButton(opJoy, JoystickMap.Y);
   Button liftLevelOne = new JoystickButton(opJoy, JoystickMap.LBUMPER);
   Button liftLevelTwo = new JoystickButton(opJoy, JoystickMap.RBUMPER);
@@ -41,6 +42,9 @@ public class OI {
   Button toggleLiftMode = new JoystickButton(opJoy, JoystickMap.LJOY);
 
   public OI() {
+    enableIntake.toggleWhenActive(new IntakeToggle());
+    hatchCargoToggle.toggleWhenActive(new HatchCargoToggle());
+    ballCargoToggle.toggleWhenActive(new BallCargoToggle());
   }
 
   public double getThrottle() {
@@ -52,7 +56,11 @@ public class OI {
   }
 
   public double getRot() {
-    return rotJoy.getRawAxis(JoystickMap.RX);
+    return rotJoy.getRawAxis(JoystickMap.LX);
+  }
+
+  public double getLiftAxis() {
+    return opJoy.getRawAxis(JoystickMap.LJOYY);
   }
 
   /*

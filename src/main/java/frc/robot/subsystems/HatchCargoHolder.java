@@ -15,8 +15,16 @@ public class HatchCargoHolder extends Subsystem {
     private DoubleSolenoid hatchDoubleSolenoid;
 
     public HatchCargoHolder() {
-        //hatchDoubleSolenoid = new DoubleSolenoid(RobotMap.HATCHRELEASE_FORWARD, RobotMap.HATCHRELEASE_REVERSE);
+        hatchDoubleSolenoid = new DoubleSolenoid(RobotMap.HATCH_ACTIVE, RobotMap.HATCH_INACTIVE);
         hatchDoubleSolenoid.set(Value.kReverse);
+    }
+
+    public void toggle() {
+        if (getState() == Value.kForward) {
+            reset();
+        } else {
+            release();
+        }
     }
 
     public void release() {
