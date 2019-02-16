@@ -14,7 +14,7 @@ public class CargoIntake extends Subsystem {
      * to pick as well as what period of the match the robot is in.
      */
 
-    private static final double SPIN_UP_VAL = 0.40;
+    private static final double SPIN_UP_VAL = 0.50;
     private static final double SPIN_DOWN_VAL = 0.0;
 
     private boolean state = false;

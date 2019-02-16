@@ -6,11 +6,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.LiftDriveDirect;
 import frc.robot.util.*;
-
-public class Lift extends Subsystem {
 
     /**
      * The Lift class has two ~movement modes~ to ensure that seperation between the
@@ -26,6 +25,8 @@ public class Lift extends Subsystem {
      * advantageous to hold and place hatches instead of balls at the beginning of
      * the match.
      */
+
+public class Lift extends Subsystem {
 
     private static enum LiftState {
         GoingUp,
@@ -43,22 +44,13 @@ public class Lift extends Subsystem {
         this.state = newState;
     }
 
-    private static enum LiftMode {
-        Cargo, Hatch
-    };
-
-    private void setMode(LiftMode updatedLiftMode) {
-        this.currentMode = updatedLiftMode;
-    }
-
     public enum Positions {
         Intake(0),
-        RocketC0(131990),
         RocketH1(434791),
-        RocketC1(566781),
         RocketH2(869582),
+        RocketC0(131990),
+        RocketC1(566781),
         RocketC2(1001572);
-
         private int position;
         
         Positions(int encPos) {
@@ -70,25 +62,45 @@ public class Lift extends Subsystem {
         }
     }
 
+    private static enum LiftMode {
+        Cargo, Hatch
+    };
+
+    private void setMode(LiftMode updatedLiftMode) {
+        this.currentMode = updatedLiftMode;
+    }
+
     private volatile LiftState state = LiftState.Stationary;
     private volatile Positions position = Positions.Intake;
 
     private LiftMode currentMode;
     private double currentHeight;
 
-    private TalonSRX liftMaster;
+    private volatile TalonSRX liftMaster;
     private VictorSPX liftSlave;
+
+    private static final int CRUISE_VEL_DOWN = 100000;
+    private static final int CRUISE_VEL_UP = 110000;
+    private static final int ACCELERATION_DOWN = 5000;
+    private static final int ACCELERATION_UP = 8000;
+
+    private static final int MOTION_MAGIC_TOLERANCE = 3000;
+
+    //PIDF Control
+    private double kP = 0.5;
+    private double kI = 0.0;
+    private double kD = 4.0;
+    private double kF = 0.115;
 
     public Lift() {
         liftMaster = new TalonSRX(RobotMap.LIFT_MASTER);
         liftMaster.setInverted(true);
         liftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         liftMaster.setSelectedSensorPosition(0, 0, 0);
+
         liftSlave = new VictorSPX(RobotMap.LIFT_SLAVE);
         liftSlave.follow(liftMaster);
         currentMode = LiftMode.Hatch;
-
-        // currentHeight = do some math to figure out current position
     }
 
     public void toggleMode() {
@@ -103,22 +115,67 @@ public class Lift extends Subsystem {
         int currentPosition = getEncoderPos();
         if (currentPosition > position.getPosition()) {
             this.setState(LiftState.GoingDown);
-        } else if (currentPosition < position.getPosition()) {
+            configMotionMagic(CRUISE_VEL_DOWN, ACCELERATION_DOWN);
+            liftMaster.set(ControlMode.MotionMagic, 0);
+        } else {
             this.setState(LiftState.GoingUp);
+            configMotionMagic(CRUISE_VEL_UP, ACCELERATION_UP);
+
         }
+    }
+
+    public void checkMotionMagicTermination(Positions pos) {
+        if (pos == Positions.Intake) {
+            if (getEncoderPos() <= (MOTION_MAGIC_TOLERANCE * 2)) {
+                state = LiftState.Stationary;
+                stop();
+                position = pos;
+            }
+        } else if (Math.abs(pos.getPosition() - getEncoderPos()) <= MOTION_MAGIC_TOLERANCE) {
+            state = LiftState.Stationary;
+            stop();
+            position = pos;
+        }
+        SmartDashboard.putString("Desired elevator position enum", pos.toString());
+        SmartDashboard.putNumber("Motion Magic set position", liftMaster.getClosedLoopTarget(0));
+        SmartDashboard.putNumber("CTRError", liftMaster.getClosedLoopError(0));
+        SmartDashboard.putNumber("Desired elevator position", pos.getPosition());
+        SmartDashboard.putNumber("Closed loop error", Math.abs(pos.getPosition() - getEncoderPos()));
     }
 
     public void directControl(double liftSpeed) {
         liftMaster.set(ControlMode.PercentOutput, liftSpeed * 0.4);
     }
 
+    public void updatePIDFOnDashboard() {
+        SmartDashboard.putNumber("kP", kP);
+        SmartDashboard.putNumber("kI", kI);
+        SmartDashboard.putNumber("kD", kD);
+        SmartDashboard.putNumber("kF", kF);
+    }
+
+    public void updatePIDFFromDashboard() {
+        kP = SmartDashboard.getNumber("kP", kP);
+        kI = SmartDashboard.getNumber("kI", kI);
+        kD = SmartDashboard.getNumber("kD", kD);
+        kF = SmartDashboard.getNumber("kF", kF);
+        configPIDF(kP, kI, kD, kF);
+    }
+
+    private void configPIDF(double kP, double kI, double kD, double kF) {
+        liftMaster.config_kP(0, kP, 0);
+        liftMaster.config_kI(0, kI, 0);
+        liftMaster.config_kD(0, kD, 0);
+        liftMaster.config_kF(0, kF, 0);
+    }
+
     public void stop() {
         liftMaster.set(ControlMode.PercentOutput, 0);
     }
 
-    public void moveTo(double updatedHeight) {
-        // TODO: Motion magic from current position to updated height
-
+    public void configMotionMagic(int cruiseVelocity, int acceleration) {
+        liftMaster.configMotionCruiseVelocity(cruiseVelocity, 0);
+        liftMaster.configMotionAcceleration(acceleration, 0);
     }
 
     public int getEncoderPos() {

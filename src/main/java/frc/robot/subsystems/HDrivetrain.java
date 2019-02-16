@@ -13,7 +13,8 @@ public class HDrivetrain extends Subsystem {
 
     /**
      * The drivetrain subsystem models the West Coast drive style of drivetrain
-     * (with sensitive strafing control) Joystick inputs are tuned for maximum control
+     * (with sensitive strafing control) Joystick inputs are tuned for maximum
+     * control
      */
 
     private VictorSPX rightMaster = new VictorSPX(RobotMap.RIGHT_DRIVE_MASTER);
@@ -31,12 +32,13 @@ public class HDrivetrain extends Subsystem {
         leftMaster.setInverted(true);
         leftSlave.setInverted(true);
 
-        // Center wheel ramp rate in order to prevent wheel slippage
-        center.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
+        /// enter wheel ramp rate in order to prevent wheel slippage
+        // center.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
     }
-    
+
     double tunedThrottle = 0.0;
     double tunedStrafe = 0.0;
+
     public void arcadeDrive(double throttle, double turn, double strafe) {
 
         // Taking raw throttle and applying a sin^2 curve to tune throttle sensitivity
@@ -49,15 +51,11 @@ public class HDrivetrain extends Subsystem {
 
         // Taking raw strafe and applyng a ^1.7 curve to tune throttle sensitivity
         // (https://www.desmos.com/calculator/hjemci2ebf)
-        if (strafe > 0) {
-            tunedStrafe = Math.pow(strafe, 1.7);
-        } else {
-            tunedStrafe = -Math.pow(-strafe, 1.7);
-        }
-        System.out.println(turn);
+
         // Holonomic Drivetrain
-        rightMaster.set(ControlMode.PercentOutput, tunedThrottle + turn);
-        leftMaster.set(ControlMode.PercentOutput, tunedThrottle - turn);
+        System.out.println(strafe);
+        rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + turn) * 0.75);
+        leftMaster.set(ControlMode.PercentOutput, (tunedThrottle - turn) * 0.75);
         center.set(ControlMode.PercentOutput, strafe);
     }
 

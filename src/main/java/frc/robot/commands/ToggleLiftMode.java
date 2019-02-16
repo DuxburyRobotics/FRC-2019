@@ -10,9 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveArcade extends Command {
-  public DriveArcade() {
-    requires(Robot.rHDrivetrain);
+public class ToggleLiftMode extends Command {
+  public ToggleLiftMode() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.rLift);
   }
 
   // Called just before this Command runs the first time
@@ -23,7 +25,7 @@ public class DriveArcade extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.rHDrivetrain.arcadeDrive(Robot.oi.getThrottle(), Robot.oi.getRot(), Robot.oi.getStrafe());
+    Robot.rLift.toggleMode();
   }
 
   // Make this return true when this Command no longer needs to run execute()
