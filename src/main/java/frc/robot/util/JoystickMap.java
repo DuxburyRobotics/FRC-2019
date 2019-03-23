@@ -2,18 +2,20 @@ package frc.robot.util;
 
 public class JoystickMap {
 
-    //Rotation Joystick (Left)
-    //Axes
+    // Rotation Joystick (Left)
+    // Axes
     public static final int LY = 1;
     public static final int LX = 0;
 
-    //Throttle Joystick (Right)
-    //Axes
+    // Throttle Joystick (Right)
+    // Axes
     public static final int RY = 1;
     public static final int RX = 0;
+    // Buttons
+    public static final int TRIGGER = 1;
 
-    //Operator Joystick (Emulated or Physical Xbox controller)
-    //Button ids
+    // Operator Joystick (Emulated or Physical Xbox controller)
+    // Button ids
     public static final int A = 1;
     public static final int B = 2;
     public static final int X = 3;
@@ -24,6 +26,6 @@ public class JoystickMap {
     public static final int OPTIONS = 8;
     public static final int LJOY = 9;
     public static final int RJOY = 12;
-    //Axes
+    // Axes
     public static final int RJOYY = 1;
 }

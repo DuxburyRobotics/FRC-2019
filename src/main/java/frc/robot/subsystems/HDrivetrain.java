@@ -55,7 +55,7 @@ public class HDrivetrain extends Subsystem {
         // (https://www.desmos.com/calculator/hjemci2ebf)
 
         // Holonomic Drivetrain
-        if (forward) {
+        if (!forward) {
             rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + (turn * 0.5)) * 1.00);
             leftMaster.set(ControlMode.PercentOutput, (tunedThrottle - (turn * 0.5)) * 1.00);
             center.set(ControlMode.PercentOutput, -strafe);

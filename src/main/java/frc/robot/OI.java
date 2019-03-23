@@ -35,20 +35,16 @@ public class OI {
   Button hatchCargoToggle = new JoystickButton(opJoy, JoystickMap.A);
   Button ballCargoToggle = new JoystickButton(opJoy, JoystickMap.B);
   Button intakeToggle = new JoystickButton(opJoy, JoystickMap.X);
-  Button liftLevelZero = new JoystickButton(opJoy, JoystickMap.Y);
-  Button liftLevelOne = new JoystickButton(opJoy, JoystickMap.LBUMPER);
-  Button liftLevelTwo = new JoystickButton(opJoy, JoystickMap.RBUMPER);
+  Button clearIntake = new JoystickButton(opJoy, JoystickMap.Y);
 
-  Button toggleObjectMode = new JoystickButton(opJoy, JoystickMap.LJOY);
+  Button toggleObjectMode = new JoystickButton(throttleJoy, JoystickMap.TRIGGER);
 
   public OI() {
     intakeToggle.toggleWhenActive(new IntakeToggle());
     hatchCargoToggle.toggleWhenActive(new HatchCargoToggle());
     ballCargoToggle.toggleWhenActive(new BallCargoToggle());
     toggleObjectMode.toggleWhenActive(new ToggleObjectMode());
-
-    liftLevelZero.whenPressed(new MoveMotionMagic(Positions.Intake));
-    liftLevelOne.whenPressed(new MoveMotionMagic(Positions.RocketH1));
+    clearIntake.toggleWhenActive(new ClearIntake());
   }
 
   public double getThrottle() {
