@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.util.JoystickMap;
 import frc.robot.commands.*;
+import frc.robot.subsystems.Lift.Positions;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,14 +38,17 @@ public class OI {
   Button liftLevelZero = new JoystickButton(opJoy, JoystickMap.Y);
   Button liftLevelOne = new JoystickButton(opJoy, JoystickMap.LBUMPER);
   Button liftLevelTwo = new JoystickButton(opJoy, JoystickMap.RBUMPER);
-  
-  Button toggleLiftMode = new JoystickButton(opJoy, JoystickMap.LJOY);
+
+  Button toggleObjectMode = new JoystickButton(opJoy, JoystickMap.LJOY);
 
   public OI() {
     intakeToggle.toggleWhenActive(new IntakeToggle());
     hatchCargoToggle.toggleWhenActive(new HatchCargoToggle());
     ballCargoToggle.toggleWhenActive(new BallCargoToggle());
-    toggleLiftMode.toggleWhenActive(new ToggleLiftMode());
+    toggleObjectMode.toggleWhenActive(new ToggleObjectMode());
+
+    liftLevelZero.whenPressed(new MoveMotionMagic(Positions.Intake));
+    liftLevelOne.whenPressed(new MoveMotionMagic(Positions.RocketH1));
   }
 
   public double getThrottle() {
@@ -60,21 +64,15 @@ public class OI {
   }
 
   public double getLiftAxis() {
-    return opJoy.getRawAxis(JoystickMap.LJOYY);
+    return opJoy.getRawAxis(JoystickMap.RJOYY);
   }
 
   /*
-  public Joystick getOperatorJoy() {
-    return operatorJoystick;
-  }
+   * public Joystick getOperatorJoy() { return operatorJoystick; }
+   * 
+   * public Joystick getThrottleJoy() { return throttleJoy; }
+   * 
+   * public Joystick getRotJoy() { return rotJoy; }
+   */
 
-  public Joystick getThrottleJoy() {
-    return throttleJoy;
-  }
-
-  public Joystick getRotJoy() {
-    return rotJoy;
-  } 
-  */
-  
 }

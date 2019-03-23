@@ -2,38 +2,36 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.LiftDriveDirect;
 import frc.robot.util.*;
 
-    /**
-     * The Lift class has two ~movement modes~ to ensure that seperation between the
-     * hatch and ball management on the lift is made apparent and to adjust for the
-     * differing levels at which the hatches and balls are released back out onto
-     * the field.
-     * 
-     * The lift uses Motion Magic (automatic motion profiling for Talon SRX motor
-     * controllers) and a string potentiometer to be able to accurately and
-     * repeatably move the lift.
-     * 
-     * The default mode that the Lift gets intialized with is 'Hatch' mode as it is
-     * advantageous to hold and place hatches instead of balls at the beginning of
-     * the match.
-     */
+/**
+ * The Lift class has two ~movement modes~ to ensure that seperation between the
+ * hatch and ball management on the lift is made apparent and to adjust for the
+ * differing levels at which the hatches and balls are released back out onto
+ * the field.
+ * 
+ * The lift uses Motion Magic (automatic motion profiling for Talon SRX motor
+ * controllers) and a string potentiometer to be able to accurately and
+ * repeatably move the lift.
+ * 
+ * The default mode that the Lift gets intialized with is 'Hatch' mode as it is
+ * advantageous to hold and place hatches instead of balls at the beginning of
+ * the match.
+ */
 
 public class Lift extends Subsystem {
 
-    private static enum LiftState {
-        GoingUp,
-        GoingDown,
-        Stationary,
-        BottomedOut,
-        ToppedOut,
+    public static enum LiftState {
+        GoingUp, GoingDown, Stationary, BottomedOut, ToppedOut,
     }
 
     public LiftState getState() {
@@ -45,14 +43,9 @@ public class Lift extends Subsystem {
     }
 
     public enum Positions {
-        Intake(0),
-        RocketH1(434791),
-        RocketH2(869582),
-        RocketC0(131990),
-        RocketC1(566781),
-        RocketC2(1001572);
+        Intake(0), RocketH1(434791), RocketH2(869582), RocketC0(131990), RocketC1(566781), RocketC2(1001572);
         private int position;
-        
+
         Positions(int encPos) {
             this.position = encPos;
         }
@@ -62,31 +55,24 @@ public class Lift extends Subsystem {
         }
     }
 
-    private static enum LiftMode {
-        Cargo, Hatch
-    };
+    public volatile LiftState state = LiftState.Stationary;
+    public volatile Positions position = Positions.Intake;
 
-    private void setMode(LiftMode updatedLiftMode) {
-        this.currentMode = updatedLiftMode;
-    }
-
-    private volatile LiftState state = LiftState.Stationary;
-    private volatile Positions position = Positions.Intake;
-
-    private LiftMode currentMode;
     private double currentHeight;
 
     private volatile TalonSRX liftMaster;
     private VictorSPX liftSlave;
 
+    private static final int LIFT_MAX = 880000;
     private static final int CRUISE_VEL_DOWN = 100000;
     private static final int CRUISE_VEL_UP = 110000;
     private static final int ACCELERATION_DOWN = 5000;
     private static final int ACCELERATION_UP = 8000;
 
     private static final int MOTION_MAGIC_TOLERANCE = 3000;
+    public DigitalInput liftLimit = new DigitalInput(4);
 
-    //PIDF Control
+    // PIDF Control
     private double kP = 0.5;
     private double kI = 0.0;
     private double kD = 4.0;
@@ -100,15 +86,6 @@ public class Lift extends Subsystem {
 
         liftSlave = new VictorSPX(RobotMap.LIFT_SLAVE);
         liftSlave.follow(liftMaster);
-        currentMode = LiftMode.Hatch;
-    }
-
-    public void toggleMode() {
-        if (currentMode == LiftMode.Cargo) {
-            currentMode = LiftMode.Hatch;
-        } else {
-            currentMode = LiftMode.Cargo;
-        }
     }
 
     public void startMotionMagic(Positions position) {
@@ -136,15 +113,26 @@ public class Lift extends Subsystem {
             stop();
             position = pos;
         }
+
         SmartDashboard.putString("Desired elevator position enum", pos.toString());
-        SmartDashboard.putNumber("Motion Magic set position", liftMaster.getClosedLoopTarget(0));
-        SmartDashboard.putNumber("CTRError", liftMaster.getClosedLoopError(0));
+        // SmartDashboard.putNumber("Motion Magic set position",
+        // liftMaster.getClosedLoopTarget(0));
+        // SmartDashboard.putNumber("CTRError", liftMaster.get;
         SmartDashboard.putNumber("Desired elevator position", pos.getPosition());
         SmartDashboard.putNumber("Closed loop error", Math.abs(pos.getPosition() - getEncoderPos()));
     }
 
     public void directControl(double liftSpeed) {
-        liftMaster.set(ControlMode.PercentOutput, liftSpeed * 0.4);
+        if (liftLimit.get()) { // Lift is at bottom
+            if (liftSpeed < 0) { // Lift is going up
+                liftMaster.set(ControlMode.PercentOutput, -(liftSpeed * 0.4));
+            } else { // Lift is going down
+                liftMaster.set(ControlMode.PercentOutput, 0.0);
+            }
+        } else {
+            liftMaster.set(ControlMode.PercentOutput, -(liftSpeed * 0.4));
+        }
+
     }
 
     public void updatePIDFOnDashboard() {

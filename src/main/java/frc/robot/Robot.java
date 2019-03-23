@@ -7,10 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
@@ -19,42 +15,53 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveArcade;
 import frc.robot.commands.LiftDriveDirect;
 import frc.robot.subsystems.*;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-  public static HDrivetrain rHDrivetrain = new HDrivetrain();
-  public static HatchCargoHolder rHatchCargoHolder = new HatchCargoHolder();
-  public static BallCargoHolder rBallCargoHolder = new BallCargoHolder();
-  public static CargoIntake rCargoIntake = new CargoIntake();
-  public static Lift rLift = new Lift();
-  
-  Compressor c = new Compressor();
+  public static HDrivetrain rHDrivetrain;
+  public static HatchCargoHolder rHatchCargoHolder;
+  public static BallCargoHolder rBallCargoHolder;
+  public static CargoIntake rCargoIntake;
+  public static Lift rLift;
+  private static Compressor comp;
+  private static UsbCamera frontCamera;
+  private static UsbCamera rearCamera;
 
   public static OI oi;
 
-  UsbCamera frontCamera;
-  UsbCamera rearCamera;
-
   Command m_autonomousCommand;
   SendableChooser<Command> liftHeightChooser = new SendableChooser<>();
+
+  private static enum ObjectMode {
+    Cargo, Hatch
+  };
+
+  private static ObjectMode currentMode;
+
+  public static void toggleMode() {
+    if (currentMode == ObjectMode.Cargo) {
+      currentMode = ObjectMode.Hatch;
+    } else {
+      currentMode = ObjectMode.Cargo;
+    }
+  }
 
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
-  @Override
+
   public void robotInit() {
-    c.setClosedLoopControl(true);
+    rHDrivetrain = new HDrivetrain();
+    rHatchCargoHolder = new HatchCargoHolder();
+    rBallCargoHolder = new BallCargoHolder();
+    rCargoIntake = new CargoIntake();
+    rLift = new Lift();
+    comp = new Compressor();
     oi = new OI();
+
+    comp.setClosedLoopControl(true);
 
     liftHeightChooser.setDefaultOption("Intake ", new LiftDriveDirect());
     liftHeightChooser.addOption("Level 0", new LiftDriveDirect());
@@ -62,6 +69,8 @@ public class Robot extends TimedRobot {
 
     frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
     rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
+
+    currentMode = ObjectMode.Hatch;
   }
 
   /**
@@ -73,9 +82,10 @@ public class Robot extends TimedRobot {
    * This runs after the mode specific periodic functions, but before LiveWindow
    * and SmartDashboard integrated updating.
    */
+
   @Override
   public void robotPeriodic() {
-    
+
   }
 
   /**
@@ -83,11 +93,13 @@ public class Robot extends TimedRobot {
    * can use it to reset any subsystem information you want to clear when the
    * robot is disabled.
    */
+
   @Override
   public void disabledInit() {
-    //rCargoIntake.reset();
-    //rHatchCargoHolder.reset();
-    //rLift.reset();
+    // rCargoIntake.reset();
+    // rHatchCargoHolder.reset();
+    // rLift.reset();
+    rHDrivetrain.reset();
   }
 
   @Override
@@ -109,7 +121,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_chooser.getSelected();
+    // m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -152,7 +164,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     updateDashboard();
   }
-  
+
   /**
    * This function is called periodically during test mode.
    */
@@ -164,5 +176,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("HatchCargo State:", rHatchCargoHolder.getState().toString());
     SmartDashboard.putString("BallCargo State:", rBallCargoHolder.getState().toString());
     SmartDashboard.putNumber("Lift Encoder", rLift.getEncoderPos());
+    SmartDashboard.putString("Object Mode", currentMode.toString());
+    SmartDashboard.putBoolean("Lift Lower Limit", rLift.liftLimit.get());
   }
 }

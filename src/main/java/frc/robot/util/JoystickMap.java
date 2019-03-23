@@ -23,7 +23,7 @@ public class JoystickMap {
     public static final int SHARE = 7;
     public static final int OPTIONS = 8;
     public static final int LJOY = 9;
-    public static final int RJOY = 10;
+    public static final int RJOY = 12;
     //Axes
-    public static final int LJOYY = 5;
+    public static final int RJOYY = 1;
 }

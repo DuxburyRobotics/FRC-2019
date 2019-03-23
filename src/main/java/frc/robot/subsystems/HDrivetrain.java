@@ -17,6 +17,8 @@ public class HDrivetrain extends Subsystem {
      * control
      */
 
+    private boolean forward = true; // CARGO is forward
+
     private VictorSPX rightMaster = new VictorSPX(RobotMap.RIGHT_DRIVE_MASTER);
     private VictorSPX rightSlave = new VictorSPX(RobotMap.RIGHT_DRIVE_SLAVE);;
     private TalonSRX leftMaster = new TalonSRX(RobotMap.LEFT_DRIVE_MASTER);;
@@ -27,13 +29,13 @@ public class HDrivetrain extends Subsystem {
         rightSlave.follow(rightMaster);
         leftSlave.follow(leftMaster);
 
-        rightMaster.setInverted(false);
-        rightSlave.setInverted(false);
-        leftMaster.setInverted(true);
-        leftSlave.setInverted(true);
-
+        rightMaster.setInverted(!forward);
+        rightSlave.setInverted(!forward);
+        leftMaster.setInverted(forward);
+        leftSlave.setInverted(forward);
+        center.setInverted(!forward);
         /// enter wheel ramp rate in order to prevent wheel slippage
-        // center.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
+        center.configOpenloopRamp(Constants.CENTER_RAMP_RATE);
     }
 
     double tunedThrottle = 0.0;
@@ -53,10 +55,23 @@ public class HDrivetrain extends Subsystem {
         // (https://www.desmos.com/calculator/hjemci2ebf)
 
         // Holonomic Drivetrain
-        System.out.println(strafe);
-        rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + turn) * 0.75);
-        leftMaster.set(ControlMode.PercentOutput, (tunedThrottle - turn) * 0.75);
-        center.set(ControlMode.PercentOutput, strafe);
+        if (forward) {
+            rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + (turn * 0.5)) * 1.00);
+            leftMaster.set(ControlMode.PercentOutput, (tunedThrottle - (turn * 0.5)) * 1.00);
+            center.set(ControlMode.PercentOutput, -strafe);
+        } else {
+            rightMaster.set(ControlMode.PercentOutput, -((tunedThrottle - (turn * 0.5)) * 1.00));
+            leftMaster.set(ControlMode.PercentOutput, -((tunedThrottle + (turn * 0.5)) * 1.00));
+            center.set(ControlMode.PercentOutput, strafe);
+        }
+    }
+
+    public void toggleDriveMode() {
+        forward = !forward;
+    }
+
+    public void reset() {
+        forward = true;
     }
 
     @Override
