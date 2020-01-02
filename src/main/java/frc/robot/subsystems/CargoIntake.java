@@ -60,7 +60,7 @@ public class CargoIntake extends Subsystem {
 
     public void reverse() {
         reverse = true;
-        cargoIntakeTalonSRX.set(ControlMode.PercentOutput, -0.4);
+        cargoIntakeTalonSRX.set(ControlMode.PercentOutput, -0.6);
     }
 
     public void reset() {

@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
   public static BallCargoHolder rBallCargoHolder;
   public static CargoIntake rCargoIntake;
   public static Lift rLift;
+  public static Climber rClimber = new Climber();
   private static Compressor comp;
   private static UsbCamera frontCamera;
   private static UsbCamera rearCamera;
@@ -69,7 +70,6 @@ public class Robot extends TimedRobot {
 
     frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
     rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
-
     currentMode = ObjectMode.Hatch;
   }
 
@@ -142,6 +142,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    updateDashboard();
   }
 
   @Override
@@ -178,5 +179,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lift Encoder", rLift.getEncoderPos());
     SmartDashboard.putString("Object Mode", currentMode.toString());
     SmartDashboard.putBoolean("Lift Lower Limit", rLift.liftLimit.get());
+
+    SmartDashboard.putBoolean("Level One Cargo", rLift.levelOneAligned);
+    SmartDashboard.putBoolean("Level Two Cargo", rLift.levelTwoAligned);
+    SmartDashboard.putBoolean("Cargo Ship", rLift.cargoShipAligned);
   }
 }

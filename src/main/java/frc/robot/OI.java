@@ -30,21 +30,31 @@ public class OI {
 
   Joystick throttleJoy = new Joystick(0);
   Joystick rotJoy = new Joystick(1);
-  Joystick opJoy = new Joystick(2);
+  //Joystick opJoy = new Joystick(2);
 
-  Button hatchCargoToggle = new JoystickButton(opJoy, JoystickMap.A);
-  Button ballCargoToggle = new JoystickButton(opJoy, JoystickMap.B);
-  Button intakeToggle = new JoystickButton(opJoy, JoystickMap.X);
-  Button clearIntake = new JoystickButton(opJoy, JoystickMap.Y);
+  Button hatchCargoToggle = new JoystickButton(throttleJoy, 1);
+  Button ballCargoToggle = new JoystickButton(throttleJoy, 2);
+  Button intakeToggle = new JoystickButton(rotJoy, 1);
+  Button clearIntake = new JoystickButton(rotJoy, 2);
 
-  Button toggleObjectMode = new JoystickButton(throttleJoy, JoystickMap.TRIGGER);
+  //Button extendClimb = new JoystickButton(opJoy, JoystickMap.LBUMPER);
+  //Button retractClimb = new JoystickButton(opJoy, JoystickMap.RBUMPER);
+
+  //Button extendFrontClimb = new JoystickButton(throttleJoy, JoystickMap.TRIGGER);
+  //Button retractFrontClimb = new JoystickButton(rotJoy, JoystickMap.ROTTRIGGER);
+  //Button toggleRearClimb = new JoystickButton(throttleJoy, JoystickMap.THUMB);
 
   public OI() {
     intakeToggle.toggleWhenActive(new IntakeToggle());
     hatchCargoToggle.toggleWhenActive(new HatchCargoToggle());
     ballCargoToggle.toggleWhenActive(new BallCargoToggle());
-    toggleObjectMode.toggleWhenActive(new ToggleObjectMode());
     clearIntake.toggleWhenActive(new ClearIntake());
+    //extendClimb.toggleWhenActive(new ExtendFrontClimb());
+    //retractClimb.toggleWhenActive(new RetractFrontClimb());
+
+    //extendFrontClimb.toggleWhenActive(new ExtendFrontClimb());
+    //retractFrontClimb.toggleWhenActive(new RetractFrontClimb());
+    //toggleRearClimb.toggleWhenActive(new ToggleRearPiston());
   }
 
   public double getThrottle() {
@@ -59,9 +69,11 @@ public class OI {
     return rotJoy.getRawAxis(JoystickMap.LX);
   }
 
+
   public double getLiftAxis() {
-    return opJoy.getRawAxis(JoystickMap.RJOYY);
+    return rotJoy.getRawAxis(2);
   }
+
 
   /*
    * public Joystick getOperatorJoy() { return operatorJoystick; }

@@ -17,8 +17,8 @@ public class RobotMap {
 
   // DRIVETRAIN
   public static final int CENTER_DRIVE = 11;
-  public static final int LEFT_DRIVE_MASTER = 2;    //TalonSRX
-  public static final int LEFT_DRIVE_SLAVE = 3;     //TalonSRX
+  public static final int LEFT_DRIVE_MASTER = 2; // TalonSRX
+  public static final int LEFT_DRIVE_SLAVE = 3; // TalonSRX
   public static final int RIGHT_DRIVE_MASTER = 15;
   public static final int RIGHT_DRIVE_SLAVE = 17;
 
@@ -26,12 +26,17 @@ public class RobotMap {
   public static final int CARGO_INTAKE = 4;
 
   // LIFT WINCH
-  public static final int LIFT_MASTER = 13; //TalonSRX
+  public static final int LIFT_MASTER = 13; // TalonSRX
   public static final int LIFT_SLAVE = 12;
 
-  // HATCH-CARGO SOLENOIDS
+  // SOLENOIDS
   public static final int HATCH_ACTIVE = 1;
   public static final int HATCH_INACTIVE = 7;
   public static final int CARGO_ACTIVE = 0;
   public static final int CARGO_INACTIVE = 6;
+  public static final int FRONTCLIMB_ACTIVE = 2;
+  public static final int FRONTCLIMB_INACTIVE = 5;
+  public static final int REARCLIMB_ACTIVE = 3;
+  public static final int REARCLIMB_INACTIVE = 4;
+
 }

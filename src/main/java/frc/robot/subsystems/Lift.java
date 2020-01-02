@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.BallCargoToggle;
 import frc.robot.commands.LiftDriveDirect;
 import frc.robot.util.*;
 
@@ -78,6 +79,7 @@ public class Lift extends Subsystem {
     private double kD = 4.0;
     private double kF = 0.115;
 
+    
     public Lift() {
         liftMaster = new TalonSRX(RobotMap.LIFT_MASTER);
         liftMaster.setInverted(true);
@@ -87,7 +89,7 @@ public class Lift extends Subsystem {
         liftSlave = new VictorSPX(RobotMap.LIFT_SLAVE);
         liftSlave.follow(liftMaster);
     }
-
+    
     public void startMotionMagic(Positions position) {
         int currentPosition = getEncoderPos();
         if (currentPosition > position.getPosition()) {
@@ -97,10 +99,10 @@ public class Lift extends Subsystem {
         } else {
             this.setState(LiftState.GoingUp);
             configMotionMagic(CRUISE_VEL_UP, ACCELERATION_UP);
-
+            
         }
     }
-
+    
     public void checkMotionMagicTermination(Positions pos) {
         if (pos == Positions.Intake) {
             if (getEncoderPos() <= (MOTION_MAGIC_TOLERANCE * 2)) {
@@ -121,27 +123,27 @@ public class Lift extends Subsystem {
         SmartDashboard.putNumber("Desired elevator position", pos.getPosition());
         SmartDashboard.putNumber("Closed loop error", Math.abs(pos.getPosition() - getEncoderPos()));
     }
-
+    
     public void directControl(double liftSpeed) {
         if (liftLimit.get()) { // Lift is at bottom
             if (liftSpeed < 0) { // Lift is going up
-                liftMaster.set(ControlMode.PercentOutput, -(liftSpeed * 0.4));
+                liftMaster.set(ControlMode.PercentOutput, -(liftSpeed * 0.8));
             } else { // Lift is going down
                 liftMaster.set(ControlMode.PercentOutput, 0.0);
             }
         } else {
-            liftMaster.set(ControlMode.PercentOutput, -(liftSpeed * 0.4));
+            liftMaster.set(ControlMode.PercentOutput, -(liftSpeed * 0.6));
         }
-
+        
     }
-
+    
     public void updatePIDFOnDashboard() {
         SmartDashboard.putNumber("kP", kP);
         SmartDashboard.putNumber("kI", kI);
         SmartDashboard.putNumber("kD", kD);
         SmartDashboard.putNumber("kF", kF);
     }
-
+    
     public void updatePIDFFromDashboard() {
         kP = SmartDashboard.getNumber("kP", kP);
         kI = SmartDashboard.getNumber("kI", kI);
@@ -149,25 +151,56 @@ public class Lift extends Subsystem {
         kF = SmartDashboard.getNumber("kF", kF);
         configPIDF(kP, kI, kD, kF);
     }
-
+    
     private void configPIDF(double kP, double kI, double kD, double kF) {
         liftMaster.config_kP(0, kP, 0);
         liftMaster.config_kI(0, kI, 0);
         liftMaster.config_kD(0, kD, 0);
         liftMaster.config_kF(0, kF, 0);
     }
-
+    
     public void stop() {
         liftMaster.set(ControlMode.PercentOutput, 0);
     }
-
+    
     public void configMotionMagic(int cruiseVelocity, int acceleration) {
         liftMaster.configMotionCruiseVelocity(cruiseVelocity, 0);
         liftMaster.configMotionAcceleration(acceleration, 0);
     }
+    
+    
+    public boolean levelOneAligned;
+    public boolean levelTwoAligned;
+    public boolean cargoShipAligned;
+
+    private static final int LEVELONEMIN = -286000;
+    private static final int LEVELONEMAX = -295000;
+    private static final int LEVELTWOMIN = -655000;
+    private static final int LEVELTWOMAX = -690000;
+    private static final int CARGOMIN = -500000;
+    private static final int CARGOMAX = -590000;
 
     public int getEncoderPos() {
-        return liftMaster.getSelectedSensorPosition(0);
+        int position = liftMaster.getSelectedSensorPosition(0);
+        if (position < LEVELTWOMIN && position > LEVELTWOMAX) {
+            levelTwoAligned = true;
+        } else {
+            levelTwoAligned = false;
+        }
+
+        if (position < LEVELONEMIN && position > LEVELONEMAX) {
+            levelOneAligned = true;
+        } else {
+            levelOneAligned = false;
+        }
+
+        if (position < CARGOMIN && position > CARGOMAX) {
+            cargoShipAligned = true;
+        } else {
+            cargoShipAligned = false;
+        }
+
+        return position;
     }
 
     public double getHeight() {

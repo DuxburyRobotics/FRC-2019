@@ -29,12 +29,12 @@ public class HatchCargoHolder extends Subsystem {
 
     public void release() {
         if (hatchDoubleSolenoid.get() != Value.kForward)
-        hatchDoubleSolenoid.set(Value.kForward);
+            hatchDoubleSolenoid.set(Value.kForward);
     }
 
     public void reset() {
         if (hatchDoubleSolenoid.get() != Value.kReverse)
-        hatchDoubleSolenoid.set(Value.kReverse);
+            hatchDoubleSolenoid.set(Value.kReverse);
     }
 
     public Value getState() {

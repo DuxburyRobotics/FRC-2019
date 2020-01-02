@@ -6,6 +6,7 @@ public class JoystickMap {
     // Axes
     public static final int LY = 1;
     public static final int LX = 0;
+    public static final int ROTTRIGGER = 1;
 
     // Throttle Joystick (Right)
     // Axes
@@ -28,4 +29,5 @@ public class JoystickMap {
     public static final int RJOY = 12;
     // Axes
     public static final int RJOYY = 1;
+    public static final int THUMB = 2;
 }

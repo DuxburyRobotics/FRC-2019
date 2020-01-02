@@ -56,12 +56,12 @@ public class HDrivetrain extends Subsystem {
 
         // Holonomic Drivetrain
         if (!forward) {
-            rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + (turn * 0.5)) * 1.00);
-            leftMaster.set(ControlMode.PercentOutput, (tunedThrottle - (turn * 0.5)) * 1.00);
+            rightMaster.set(ControlMode.PercentOutput, (tunedThrottle + (turn * 0.3)) * 1.00);
+            leftMaster.set(ControlMode.PercentOutput, (tunedThrottle - (turn * 0.3)) * 1.00);
             center.set(ControlMode.PercentOutput, -strafe);
         } else {
-            rightMaster.set(ControlMode.PercentOutput, -((tunedThrottle - (turn * 0.5)) * 1.00));
-            leftMaster.set(ControlMode.PercentOutput, -((tunedThrottle + (turn * 0.5)) * 1.00));
+            rightMaster.set(ControlMode.PercentOutput, -((tunedThrottle - (turn * 0.3)) * 1.00));
+            leftMaster.set(ControlMode.PercentOutput, -((tunedThrottle + (turn * 0.3)) * 1.00));
             center.set(ControlMode.PercentOutput, strafe);
         }
     }
